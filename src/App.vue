@@ -1,6 +1,13 @@
 <!-- ! JavaScript Land -->
-<!-- The setup keyword -->
 <script setup>
+/* 
+    The setup keyword the code in the script will execute every time
+    an instance of the component is created.
+    
+    Any top-level bindings (including variables, function declarations, and imports) declared inside <script setup> are directly usable in the template
+
+    Imports are exposed in the same fashion. This means you can directly use an imported helper function in template expressions
+ */
 // import dependencies from vue
 import {ref, reactive} from 'vue'
 /* 
@@ -11,19 +18,11 @@ import {ref, reactive} from 'vue'
     where the arugment can be found in the new object.value property
 */
 
-const counter = reactive({
-    count: 0
-})
-
+const counter = reactive({ count: 0 })
 const message = ref("Lets count somethings...")
 
-function add() {
-    counter.count +=1
-}
-
-function sub() {
-    counter.count -=1
-}
+function add() {counter.count +=1}
+function sub() {counter.count -=1}
 </script>
 
 <!-- ! HTML Land -->
