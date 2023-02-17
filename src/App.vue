@@ -9,7 +9,7 @@
     Imports are exposed in the same fashion. This means you can directly use an imported helper function in template expressions
  */
 // import dependencies from vue
-import {ref, reactive} from 'vue'
+import {ref, reactive, computed} from 'vue'
 /* 
     reactive - is similar to useState in React with limitations
     only applicable to objects including arrays
@@ -40,10 +40,18 @@ let id = 0
 const newTodo = ref('')
 // initial todos
 const todos = ref([
-    {id: id++, text: 'Breakfast'},
-    {id: id++, text: 'Lunch'},
-    {id: id++, text: 'Dinner'},
+    {id: id++, text: 'Breakfast', done: true},
+    {id: id++, text: 'Lunch', done: true},
+    {id: id++, text: 'Dinner', done: false},
 ])
+const hideCompleted = ref(false)
+// filtered list of todos base on done value using the computed hook
+const filteredTodos = computed(() => {
+  return hideCompleted.value
+    ? todos.value.filter((t) => !t.done)
+    : todos.value
+})
+
 // add new todo
 function addTodo() {
     todos.value.push({id: id++, text: newTodo.value})
@@ -91,11 +99,17 @@ function deleteTodo(todo){
     </form>
     <!-- list for todos -->
     <ul>
-        <li v-for="todo in todos" :key="todo.id">
-          {{ todo.text }}
-          <button @click="deleteTodo(todo)">X</button>
+        <li v-for="todo in filteredTodos" :key="todo.id">
+            <!-- create input to check off todo -->
+            <input type="checkbox" v-model="todo.done">
+            <span :class="{ done: todo.done }">{{ todo.text }}</span>
+            <button @click="deleteTodo(todo)">X</button>
         </li>
     </ul>
+    <!-- toggle for hideCompleted -->
+    <button @click="hideCompleted = !hideCompleted">
+        {{ hideCompleted ? 'Show all' : 'Hide completed' }}
+    </button>
 </template>
 
 <!-- ! CSS Land -->
@@ -109,5 +123,9 @@ function deleteTodo(todo){
 
 .red  {
     color: red;
+}
+
+.done{
+    text-decoration: line-through;
 }
 </style>
