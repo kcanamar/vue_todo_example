@@ -23,13 +23,27 @@ const message = ref("Lets count somethings...")
 
 function add() {counter.count +=1}
 function sub() {counter.count -=1}
+
+// conditional attributes 
+const positive = ref("green")
+const negative = ref("red")
+
 </script>
 
 <!-- ! HTML Land -->
 <template>
 <!-- use mustaches to excape HTML land {{ JavaScript Land }} -->
     <h1>{{message}}</h1>
-    <h1>{{counter.count}}</h1>
+
+    <!-- condtional redering -->
+    <!-- uses v-if, v-else-if, v-else the assignment is the conditonal expression -->
+    <template v-if="counter.count > 0">
+        <h1 v-bind:class="positive">{{counter.count}}</h1>
+    </template>
+    <template v-else>
+        <h1 v-bind:class="negative">{{counter.count}}</h1>
+    </template>
+    
 
     <!-- @click == onClick -->
     <h1>Variable Buttons</h1>
@@ -48,4 +62,12 @@ function sub() {counter.count -=1}
 <!-- The scoped keyword will keep these styles scoped to this component -->
 <style scoped>
 
+/* classes for contional styling */
+.green{
+    color: green;
+}
+
+.red  {
+    color: red;
+}
 </style>
