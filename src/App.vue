@@ -28,6 +28,31 @@ function sub() {counter.count -=1}
 const positive = ref("green")
 const negative = ref("red")
 
+// input handling
+// use v-model="variable name" to short hand event.target handling
+const text = ref("")
+
+// form handling
+// basic todo list
+// unique id for todos
+let id = 0
+// newTodo input handler
+const newTodo = ref('')
+// initial todos
+const todos = ref([
+    {id: id++, text: 'Breakfast'},
+    {id: id++, text: 'Lunch'},
+    {id: id++, text: 'Dinner'},
+])
+// add new todo
+function addTodo() {
+    todos.value.push({id: id++, text: newTodo.value})
+    newTodo.value = ''
+}
+// delete a todo
+function deleteTodo(todo){
+    todos.value = todos.value.filter((curr) => curr !== todo)
+}
 </script>
 
 <!-- ! HTML Land -->
@@ -53,9 +78,24 @@ const negative = ref("red")
     <br>
     <h1>Function Buttons</h1>
     <!-- passing a seperate function -->
-    <button @click="add()">Add</button>
-    <button @click="sub()">Subtract</button>
-
+    <button v-on:click="add()">Add</button>
+    <button v-on:click="sub()">Subtract</button>
+    <br>
+    <!-- input handling -->
+    <input v-model="text">
+    <p> Look at what you wrote: {{text}}</p>
+    <!-- form handling -->
+    <form @submit.prevent="addTodo">
+        <input v-model="newTodo">
+        <button>Add Todo</button>
+    </form>
+    <!-- list for todos -->
+    <ul>
+        <li v-for="todo in todos" :key="todo.id">
+          {{ todo.text }}
+          <button @click="deleteTodo(todo)">X</button>
+        </li>
+    </ul>
 </template>
 
 <!-- ! CSS Land -->
