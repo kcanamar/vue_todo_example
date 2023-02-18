@@ -88,7 +88,7 @@ watch(count, watcher)
     <p> Look at what you wrote: {{text}}</p>
 
     <!-- Use Child Component -->
-    <TodoBasic />
+    <TodoBasic name="Kyle"/>
 
     <h1>{{count}}</h1>
     <button @click="count++">Trigger Watch, check the console</button>

@@ -30,9 +30,14 @@ function deleteTodo(todo){
     todos.value = todos.value.filter((curr) => curr !== todo)
 }
 
+const props = defineProps({
+    name: String,
+})
 </script>
 
 <template>
+
+<h1>This is {{ name || 'Someone'}}'s Todo List</h1>
  <!-- form handling -->
  <form @submit.prevent="addTodo">
     <input v-model="newTodo">
