@@ -9,13 +9,21 @@
     Imports are exposed in the same fashion. This means you can directly use an imported helper function in template expressions
  */
 // import dependencies from vue
-import {ref, reactive, computed} from 'vue'
+import {ref, reactive, computed, onMounted, watch } from 'vue'
 /* 
     reactive - is similar to useState in React with limitations
     only applicable to objects including arrays
 
     ref - creates an object from any argument and creates an object 
     where the arugment can be found in the new object.value property
+
+    computed - tracks other reactive state used in its computation as dependencies.
+    It caches the result and automatically updates it when its dependencies change.
+
+    onMounted - it allows us to register a callback to be called at certain times of the component's lifecycle. 
+    There are other hooks such as onUpdated and onUnmounted
+
+    watch - can directly watch a ref, and the callback gets fired whenever ref's value changes
 */
 
 const counter = reactive({ count: 0 })
@@ -61,11 +69,25 @@ function addTodo() {
 function deleteTodo(todo){
     todos.value = todos.value.filter((curr) => curr !== todo)
 }
+
+// onMounted example
+const p = ref(null)
+onMounted(()=> {
+    p.value.textContent = "mounted"
+})
+
+const count = ref(0)
+function showTodos() {
+    console.log(todos.value, "< check out the todos")
+}
+// watch example
+watch(count, showTodos)
 </script>
 
 <!-- ! HTML Land -->
 <template>
 <!-- use mustaches to excape HTML land {{ JavaScript Land }} -->
+    <p ref="p">Hello World</p>
     <h1>{{message}}</h1>
 
     <!-- condtional redering -->
@@ -110,6 +132,9 @@ function deleteTodo(todo){
     <button @click="hideCompleted = !hideCompleted">
         {{ hideCompleted ? 'Show all' : 'Hide completed' }}
     </button>
+
+    <h1>{{count}}</h1>
+    <button @click="count++">Trigger Watch, check the console</button>
 </template>
 
 <!-- ! CSS Land -->
