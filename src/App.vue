@@ -28,6 +28,17 @@ import {ref, reactive, computed, onMounted, watch } from 'vue'
 // import a childComponent
 import TodoBasic from './components/TodoBasic.vue';
 
+// import slot example
+import Slot from './components/Slot.vue';
+// slot example
+const msg = ref()
+function changePlan() {
+    if (!msg.value) {
+        return msg.value = 'the main plan'
+    }
+
+}
+
 const counter = reactive({ count: 0 })
 const message = ref("Lets count somethings...")
 
@@ -89,9 +100,17 @@ watch(count, watcher)
 
     <!-- Use Child Component -->
     <TodoBasic name="Kyle"/>
-
+    <!-- watch example -->
     <h1>{{count}}</h1>
     <button @click="count++">Trigger Watch, check the console</button>
+
+    <br>
+    <br>
+    <!-- slot example -->
+    <!-- the children of Slot will show before the fallback defined in the component -->
+    <Slot>
+        {{ msg }}
+    </Slot>
 </template>
 
 <!-- ! CSS Land -->
