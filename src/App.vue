@@ -25,6 +25,8 @@ import {ref, reactive, computed, onMounted, watch } from 'vue'
 
     watch - can directly watch a ref, and the callback gets fired whenever ref's value changes
 */
+// import a childComponent
+import TodoBasic from './components/TodoBasic.vue';
 
 const counter = reactive({ count: 0 })
 const message = ref("Lets count somethings...")
@@ -40,36 +42,6 @@ const negative = ref("red")
 // use v-model="variable name" to short hand event.target handling
 const text = ref("")
 
-// form handling
-// basic todo list
-// unique id for todos
-let id = 0
-// newTodo input handler
-const newTodo = ref('')
-// initial todos
-const todos = ref([
-    {id: id++, text: 'Breakfast', done: true},
-    {id: id++, text: 'Lunch', done: true},
-    {id: id++, text: 'Dinner', done: false},
-])
-const hideCompleted = ref(false)
-// filtered list of todos base on done value using the computed hook
-const filteredTodos = computed(() => {
-  return hideCompleted.value
-    ? todos.value.filter((t) => !t.done)
-    : todos.value
-})
-
-// add new todo
-function addTodo() {
-    todos.value.push({id: id++, text: newTodo.value})
-    newTodo.value = ''
-}
-// delete a todo
-function deleteTodo(todo){
-    todos.value = todos.value.filter((curr) => curr !== todo)
-}
-
 // onMounted example
 const p = ref(null)
 onMounted(()=> {
@@ -77,11 +49,11 @@ onMounted(()=> {
 })
 
 const count = ref(0)
-function showTodos() {
-    console.log(todos.value, "< check out the todos")
+function watcher() {
+    console.log("This is what happens when the watched ref changes")
 }
 // watch example
-watch(count, showTodos)
+watch(count, watcher)
 </script>
 
 <!-- ! HTML Land -->
@@ -114,24 +86,9 @@ watch(count, showTodos)
     <!-- input handling -->
     <input v-model="text">
     <p> Look at what you wrote: {{text}}</p>
-    <!-- form handling -->
-    <form @submit.prevent="addTodo">
-        <input v-model="newTodo">
-        <button>Add Todo</button>
-    </form>
-    <!-- list for todos -->
-    <ul>
-        <li v-for="todo in filteredTodos" :key="todo.id">
-            <!-- create input to check off todo -->
-            <input type="checkbox" v-model="todo.done">
-            <span :class="{ done: todo.done }">{{ todo.text }}</span>
-            <button @click="deleteTodo(todo)">X</button>
-        </li>
-    </ul>
-    <!-- toggle for hideCompleted -->
-    <button @click="hideCompleted = !hideCompleted">
-        {{ hideCompleted ? 'Show all' : 'Hide completed' }}
-    </button>
+
+    <!-- Use Child Component -->
+    <TodoBasic />
 
     <h1>{{count}}</h1>
     <button @click="count++">Trigger Watch, check the console</button>
@@ -150,7 +107,5 @@ watch(count, showTodos)
     color: red;
 }
 
-.done{
-    text-decoration: line-through;
-}
+
 </style>
